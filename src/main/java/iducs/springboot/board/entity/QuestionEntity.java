@@ -24,7 +24,7 @@ public class QuestionEntity {
 	
 	private String title; 
 	
-	@ManyToOne
+	@ManyToOne //자신을 기준으로 해서 한사람이 질문을 할 수 있다.(조인연산해줌)
 	@JoinColumn(name="fk_question_writer")
 	private UserEntity writer;	
 
