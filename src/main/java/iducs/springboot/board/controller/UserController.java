@@ -43,14 +43,14 @@ public class UserController {
 		model.addAttribute("users", userService.getUsers());
 		return "/users/list";
 	}	
-	@GetMapping("/{id}")
+	@GetMapping("/{id}")  //id로 조회
 	public String getUserById(@PathVariable(value = "id") Long id, Model model) {
 		User user = userService.getUserById(id);
 		model.addAttribute("user", user);
 		return "/users/info";
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/{id}") //id로 생성
 	public String updateUserById(@PathVariable(value = "id") Long id, @Valid User formUser, Model model, HttpSession session) {
 		User user = userService.getUserById(id);
 		user.setUserPw(formUser.getUserPw());
@@ -61,7 +61,7 @@ public class UserController {
 		session.setAttribute("user", user);
 		return "/users/info";
 	}	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{id}") //delete하는 것
 	public String deleteUserById(@PathVariable(value = "id") Long id, @Valid User formUser, Model model) {
 		userService.deleteUser(formUser);
 		model.addAttribute("name", formUser.getName());

@@ -39,7 +39,7 @@ public class QuerstionController {
 		return "/questions/list"; 
 	}	
 	
-	@PostMapping("")
+	@PostMapping("") //레지스터쪽에서 부름
 	// public String createUser(Question question, Model model, HttpSession session) {
 	public String createUser(String title, String contents, Model model, HttpSession session) {
 		User sessionUser = (User) session.getAttribute("user");

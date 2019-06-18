@@ -1,6 +1,8 @@
 package iducs.springboot.board.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import iducs.springboot.board.domain.Question;
@@ -27,7 +31,12 @@ public class QuestionEntity {
 	@ManyToOne //자신을 기준으로 해서 한사람이 질문을 할 수 있다.(조인연산해줌)
 	@JoinColumn(name="fk_question_writer")
 	private UserEntity writer;	
-
+	
+	@OneToMany(mappedBy="question")
+	@OrderBy("createTime DESC")
+	private List<AnswerEntity> answers = new ArrayList<AnswerEntity>();
+	//질문하나에 여러댓글을 얻을 수 있는 부분
+	
 	@Lob
 	private String contents;
 	private LocalDateTime createTime;
@@ -43,6 +52,12 @@ public class QuestionEntity {
 	}
 	public void setWriter(UserEntity writer) {
 		this.writer = writer;
+	}
+	public List<AnswerEntity> getAnswers() {
+		return answers;
+	}
+	public void setAnswers(List<AnswerEntity> answers) {
+		this.answers = answers;
 	}
 	public String getTitle() {
 		return title;
@@ -62,7 +77,8 @@ public class QuestionEntity {
 	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
-	public Question buildDomain() {
+	
+	public Question buildDomain() { //entity -> domain
 		Question question = new Question();
 		question.setId(id);
 		question.setTitle(title);
@@ -71,7 +87,7 @@ public class QuestionEntity {
 		question.setCreateTime(createTime);
 		return question;
 	}
-	public void buildEntity(Question question) {
+	public void buildEntity(Question question) { //domain -> entity, 시용빈도가 가장 큼
 		UserEntity userEntity = new UserEntity();
 		userEntity.buildEntity(question.getWriter());
 		
